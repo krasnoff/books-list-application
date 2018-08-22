@@ -4,7 +4,7 @@
 
 <main role="main" class="container">
   <div class="jumbotron" *ngFor="let book of books">
-    <h4>{{book.BookTitle}}</h4>
+    <h4>{{book.BookTitle | formatTitle}}</h4>
     <p class="lead">
       By: {{book.AuthorsName}}<br>
       Published: {{book.PublishedDate | date: 'd/M/y'}}<br>

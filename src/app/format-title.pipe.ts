@@ -5,8 +5,15 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatTitlePipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
-    return null;
+  transform(value: string): string {
+    var res = "";
+    var re = /[^a-zA-Z0-9 ]/gi;
+    value = value.replace(re, ""); 
+    value.split(" ").forEach(function(el) {
+      res += el.substring(0, 1).toUpperCase() + el.substring(1).toLowerCase() + " ";
+    });
+    res = res.trim();
+    return res;
   }
 
 }
