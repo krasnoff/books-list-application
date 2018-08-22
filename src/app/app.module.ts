@@ -4,10 +4,12 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { FormatTitlePipe } from './format-title.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FormatTitlePipe
   ],
   imports: [
     BrowserModule,
