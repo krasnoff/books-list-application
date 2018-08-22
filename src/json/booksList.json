@@ -1,0 +1,20 @@
+[
+    {
+        "Id": "01171ef2-637a-48ea-bf56-5d8cf53ba632",
+        "AuthorsName": "Kobi Krasnoff",
+        "PublishedDate": "2018-08-22 11:44:00",
+        "BookTitle": "@@THis is my first book"
+    },
+    {
+        "Id": "48c55ee0-5185-4358-b0c8-3e879427d10e",
+        "AuthorsName": "Kobi Krasnoff",
+        "PublishedDate": "2018-07-15 23:14:00",
+        "BookTitle": "Best seller"
+    },
+    {
+        "Id": "14d8e143-fd44-43b6-be39-9f592af6016b",
+        "AuthorsName": "Miki Berkovich",
+        "PublishedDate": "2018-07-02 09:07:00",
+        "BookTitle": "My Basketball years"
+    }
+]
