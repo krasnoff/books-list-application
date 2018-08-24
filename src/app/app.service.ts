@@ -11,7 +11,7 @@ export class AppService {
   constructor(private _http: Http, protected gd: GlobalDataService) { }
 
   createAuthorizationHeader(headers: Headers) {
-    headers.append('Content-Type', 'application/json');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
     
     if (this.gd["Credentials"])
       headers.append('Authorization', 'Bearer ' + this.gd["Credentials"].access_token);

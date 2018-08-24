@@ -9,6 +9,8 @@
       Login
     </button>
   </div>
+
+  <div class="message" [ngClass]="{'noRecs': noRecs }">You have no books</div>
   
   <div class="jumbotron" *ngFor="let book of books">
     <h4>{{book.volumeInfo.title | formatTitle}}</h4>
@@ -20,6 +22,10 @@
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary edit-modal" (click)="onBookEdit(book, template)">
       Edit Book
+    </button>
+    &nbsp;
+    <button type="button" class="btn btn-primary edit-modal" (click)="onDeleteBook(book, templateDelete)">
+      Delete Book
     </button>
   </div>
 </main>
@@ -59,3 +65,18 @@
   </div>
 </ng-template>
 
+<ng-template #templateDelete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete Book</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefDelete.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      Are you sure you want to delete this book?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onNo()">No</button>
+    <button type="button" class="btn btn-primary" (click)="onYes()">Yes</button>
+  </div>
+</ng-template>

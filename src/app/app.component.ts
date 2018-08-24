@@ -21,6 +21,8 @@ export class AppComponent implements OnInit, OnDestroy {
   subscription: Subscription = null;
   modalElement: any;
   modalRef: BsModalRef;
+  modalRefDelete: BsModalRef;
+  noRecs: boolean;
 
   public isSubmited = false;
 
@@ -39,9 +41,24 @@ export class AppComponent implements OnInit, OnDestroy {
     .subscribe (
       data => {
         this.books = data.items;
+        if (this.books.length > 0)
+          this.noRecs = true;
+        else
+          this.noRecs = false;
       },
       error => {
         this.books = [];
+      })
+  }
+
+  public deleteData() {
+    this.subscription = this._httpService.postMethod("https://www.googleapis.com/books/v1/mylibrary/bookshelves/0/removeVolume", "volumeId=" + this.BookEditForm.id)
+    .subscribe (
+      data => {
+        debugger;
+      },
+      error => {
+        debugger;
       })
   }
 
@@ -90,6 +107,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(template);
   }
 
+  onDeleteBook(el: any, template: TemplateRef<any>) {
+    this.BookEditForm = JSON.parse(JSON.stringify(el));
+    this.modalRefDelete = this.modalService.show(template);
+  }
+
+  onYes() {
+    //var id = this.BookEditForm.id;
+    this.deleteData();
+  }
+
+  onNo() {
+    this.closeModalDelete();
+  }
+
   onSave() {
     if (!this.isnullOrEmpty(this.BookEditForm.volumeInfo.authors[0]) ||
         !this.isnullOrEmpty(this.BookEditForm.volumeInfo.title)) {
@@ -127,5 +158,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private closeModal() {
     this.modalRef.hide();
     this.modalRef = null;
+  }
+
+  private closeModalDelete() {
+    this.modalRefDelete.hide();
+    this.modalRefDelete = null;
   }
 }
