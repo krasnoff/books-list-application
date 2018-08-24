@@ -12,10 +12,9 @@ export class AppService {
 
   createAuthorizationHeader(headers: Headers) {
     headers.append('Content-Type', 'application/json');
-    //headers.append('Access-Control-Allow-Origin', '*');
-    //headers.append('Access-Control-Allow-Methods', 'POST, GET');
-    //headers.append('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    headers.append('Authorization', 'Bearer ' + this.gd["Credentials"].access_token);
+    
+    if (this.gd["Credentials"])
+      headers.append('Authorization', 'Bearer ' + this.gd["Credentials"].access_token);
   }
 
   getMethod(url: string) {
