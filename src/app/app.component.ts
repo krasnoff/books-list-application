@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.signIn();
+    //this.signIn();
   };
 
   public getData() {
@@ -43,6 +43,10 @@ export class AppComponent implements OnInit, OnDestroy {
       error => {
         this.books = [];
       })
+  }
+
+  onLogin() {
+    this.signIn();
   }
 
   public signIn() {
