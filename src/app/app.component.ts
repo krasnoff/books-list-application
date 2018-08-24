@@ -1,23 +1,31 @@
-import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, AfterViewChecked, OnChanges } from '@angular/core';
 import {AppService} from './app.service';
 import {Subscription} from 'rxjs';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+import { GoogleAuthService } from 'ng-gapi';
+import { GlobalDataService } from './global-data.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [AppService]
+  providers: [AppService, GlobalDataService]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewChecked, OnChanges   {
   books: Array<any>;
   subscription: Subscription = null;
   modalElement: any;
   modalRef: BsModalRef;
 
   public isSubmited = false;
+
+  Credentials = {
+    access_token: "",
+    refresh_token: ""
+  }
 
   BookEditForm = {
     Id: "",
@@ -26,10 +34,22 @@ export class AppComponent implements OnInit, OnDestroy {
     PublishedDate: ""
   }
 
-  constructor(private _httpService:AppService, private modalService: BsModalService) {}
+  constructor(private _httpService:AppService, private modalService: BsModalService, private authService: GoogleAuthService, public gd: GlobalDataService) {}
 
   ngOnInit() {
-    this.subscription = this._httpService.getMethod("json/booksList.json")
+    this.signIn();
+  };
+
+  ngAfterViewChecked() {
+    //
+  }
+
+  ngOnChanges(changes) {
+    console.log(changes);
+  }
+
+  public getData() {
+    this.subscription = this._httpService.getMethod("https://www.googleapis.com/books/v1/mylibrary/bookshelves/0/volumes")
     .subscribe (
       data => {
         this.books = data;
@@ -37,7 +57,29 @@ export class AppComponent implements OnInit, OnDestroy {
       error => {
         this.books = [];
       })
-  };
+  }
+
+  public signIn() {
+    this.authService.getAuth().subscribe((auth) => {
+      if (auth.isSignedIn.get()) {
+        this.Credentials.access_token = auth.currentUser.get().getAuthResponse().access_token;
+        this.Credentials.refresh_token = auth.currentUser.get().getAuthResponse().login_hint;
+        this.gd["Credentials"] = this.Credentials;
+        console.log(auth.currentUser.get().getBasicProfile())
+        this.getData();
+      }else {
+        auth.signIn().then((response) => {
+          this.Credentials.access_token = response.getAuthResponse().access_token;
+          this.Credentials.refresh_token = response.getAuthResponse().login_hint;
+          this.gd["Credentials"] = this.Credentials;
+          console.log(response.getBasicProfile());
+        })
+      }
+    },
+    error => {
+      debugger;
+    })
+  }
 
   ngOnDestroy() { 
     if (this.subscription) {

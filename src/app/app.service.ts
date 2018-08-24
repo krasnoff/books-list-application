@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
 import {Http, Headers} from "@angular/http";
 import { map } from 'rxjs/operators';
+import { GlobalDataService } from './global-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
 
-  constructor(private _http: Http) { }
+  constructor(private _http: Http, protected gd: GlobalDataService) { }
 
   createAuthorizationHeader(headers: Headers) {
-    /*headers.append('X-PINGOTHER', 'pingpong');
     headers.append('Content-Type', 'application/json');
-
-    if (this.gd["token"] != undefined && this.gd["token"] != null && this.gd["token"] != "") {
-      headers.append('Authorization', 'Bearer ' + this.gd["token"]);
-    }*/
+    //headers.append('Access-Control-Allow-Origin', '*');
+    //headers.append('Access-Control-Allow-Methods', 'POST, GET');
+    //headers.append('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    headers.append('Authorization', 'Bearer ' + this.gd["Credentials"].access_token);
   }
 
   getMethod(url: string) {
-    return this._http.get(url).pipe(map(res => res.json()))
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+
+    return this._http.get(url, { headers: headers }).pipe(map(res => res.json()))
   }
 
   postMethod(url: string, body: string) {
