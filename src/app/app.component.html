@@ -4,9 +4,10 @@
 
 <main role="main" class="container">
   <button (click)="getData()" #butGetData style="display: none">get data</button>
+  
   <div class="jumbotron">
-    <button type="button" class="btn btn-primary edit-modal" (click)="onLogin()">
-      Login
+    <button type="button" class="btn btn-primary edit-modal" (click)="onBookAdd(templateAdd)">
+      Add New Book
     </button>
   </div>
 
@@ -78,5 +79,35 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="onNo()">No</button>
     <button type="button" class="btn btn-primary" (click)="onYes()">Yes</button>
+  </div>
+</ng-template>
+
+<ng-template #templateAdd>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add Book</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefAdd.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <div class="form-group">
+        <label for="txtBookTitle">Search Book</label>
+        <input  ngui-auto-complete
+          [(ngModel)]="selected" 
+          [source]="observableSource.bind(this)"  
+          list-formatter="title" class="form-control" (valueChanged)="customCallback($event)" />
+      </div>
+      <hr>
+      Selected Book:<br>
+      Title: {{selectedBook.title}}<br>
+      Author: {{selectedBook.author}}<br>
+      Id: {{selectedBook.id}}<br>
+      
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancelAdd()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="onSaveAdd()">Save</button>
   </div>
 </ng-template>

@@ -9,6 +9,8 @@ import { FormatTitlePipe } from './format-title.pipe';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+
 import {
   GoogleApiModule, 
   GoogleApiService, 
@@ -47,6 +49,7 @@ let gapiClientConfig: NgGapiClientConfig = {
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig
     }),
+    NguiAutoCompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

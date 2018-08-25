@@ -52,6 +52,7 @@ export class UserService {
     }
 
     private signInSuccessHandler(res: GoogleUser) {
+        debugger
         this.ngZone.run(() => {
             this.user = res;
             sessionStorage.setItem(
