@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, ElementRef, Rende
 import {AppService} from './app.service';
 import {Subscription, Observable} from 'rxjs';
 import 'rxjs/add/observable/timer';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -49,6 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.signIn();
   };
 
+  //#region REST calls
+
   observableSource = (keyword: any): Observable<any[]> => {
     let url: string = 
       'https://www.googleapis.com/books/v1/volumes?q='+keyword
@@ -68,8 +70,6 @@ export class AppComponent implements OnInit, OnDestroy {
       return Observable.of([]);
     }
   }
-
-  
 
   public getData() {
     this.subscription = this._httpService.getMethod("https://www.googleapis.com/books/v1/mylibrary/bookshelves/0/volumes")
@@ -129,11 +129,15 @@ export class AppComponent implements OnInit, OnDestroy {
     })
   }
 
+  //#endregion
+
   ngOnDestroy() { 
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
+
+  //#region button callback
 
   onBookEdit(el: any, template: TemplateRef<any>) {
     this.BookEditForm = JSON.parse(JSON.stringify(el));
@@ -145,10 +149,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   customCallback(obj) {
-    this.selectedBook.title = obj.volumeInfo.title;
-    this.selectedBook.author = obj.volumeInfo.authors[0];
-    this.selectedBook.id = obj.id;
-    this.selectedBook.publishDate = obj.userInfo.updated;
+    if (obj.volumeInfo) {
+      this.selectedBook.title = obj.volumeInfo.title;
+      this.selectedBook.author = obj.volumeInfo.authors[0];
+    }
+    if (obj.id)
+      this.selectedBook.id = obj.id;
+    if (obj.userInfo)
+      this.selectedBook.publishDate = obj.userInfo.updated;
   }
 
   onDeleteBook(el: any, template: TemplateRef<any>) {
@@ -220,4 +228,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.modalRefAdd.hide();
     this.modalRefAdd = null;
   }
+
+  //#endregion
 }

@@ -99,11 +99,18 @@
           list-formatter="title" class="form-control" (valueChanged)="customCallback($event)" />
       </div>
       <hr>
-      Selected Book:<br>
-      Title: {{selectedBook.title}}<br>
-      Author: {{selectedBook.author}}<br>
-      Id: {{selectedBook.id}}<br>
-      
+      <div class="form-group">
+        <label for="txtId">Id Number</label>
+        <input type="text" class="form-control" name="txtIdAdd" [(ngModel)]="selectedBook.title" disabled>
+      </div>
+      <div class="form-group">
+        <label for="txtBookTitle">Book Title</label>
+        <input type="text" class="form-control" name="txtBookTitleAdd" [(ngModel)]="selectedBook.author" disabled>
+      </div>
+      <div class="form-group">
+        <label for="txtAuthorsName">Author Name</label>
+        <input type="text" class="form-control" name="txtAuthorsNameAdd" [(ngModel)]="selectedBook.id" disabled>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
